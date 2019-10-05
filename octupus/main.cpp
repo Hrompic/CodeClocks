@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
-#define SPEED 750.f
+#define SPEED 500.f
 using namespace sf;
 class octupus
 {
@@ -25,7 +25,7 @@ public:
 int main()
 {
     // Create the main window
-    RenderWindow app(VideoMode(1200, 800), "Octupus"/*, Style::Fullscreen*/);
+    RenderWindow app(VideoMode(1200, 800), "Octupus", Style::Fullscreen);
     octupus oct(&app);
     Texture tx;
     tx.loadFromFile("Water.jpg");
@@ -42,7 +42,7 @@ int main()
             else if(event.type == Event::KeyPressed)
                 if(event.key.code == Keyboard::Q)
                     app.close();
-            if(event.type == Event::MouseButtonPressed)
+            if(event.type == Event::TouchBegan)
                 oct.mmove();
         }
 
@@ -71,7 +71,7 @@ octupus::octupus(RenderWindow* _wnd)
 
 void octupus::mmove()
 {
-    mpos = wnd->mapPixelToCoords(Mouse::getPosition(*wnd));
+    mpos = wnd->mapPixelToCoords(Touch::getPosition(0));
     moved = true;
 }
 
@@ -88,7 +88,7 @@ void octupus::draw()
 void octupus::move()
 {
     static float i;
-    static float res = 0.0075;
+    static float res = 0.75;
     Vector2f pos = mpos;
     Vector2f cpos = octp.getPosition();
 
@@ -98,14 +98,14 @@ void octupus::move()
     {
         speed = SPEED;
         i = 0;
-        res = 0.0075;
+        res = 0.75;
         moved = false;
     }
     pos.x = (pos.x-cpos.x)/dst*delta*speed;
     pos.y = (pos.y-cpos.y)/dst*delta*speed;
     speed -= i;
     i += res;
-    if(speed < 2)
+    if(speed < 10)
     {
         speed = SPEED;
         i=0;
@@ -119,5 +119,4 @@ void octupus::move()
     octp.move(pos);
 
 }
-
 
