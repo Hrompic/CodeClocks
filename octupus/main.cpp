@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
-#define SPEED 500.f
+#define SPEED 750.f
 using namespace sf;
 class octupus
 {
@@ -61,9 +61,9 @@ octupus::octupus(RenderWindow* _wnd)
     tex.loadFromFile("octopus.png");
     octp.setTexture(tex);
     octp.setTextureRect(IntRect(0, 0, 144, 168));
-    octp.setScale(0.4, 0.4);
+   // octp.setScale(0.4, 0.4);
     octp.setPosition(wnd->getSize().x/2, wnd->getSize().y/2);
-    octp.setOrigin(octp.getGlobalBounds().width*1.2, octp.getGlobalBounds().height*1.2);
+    octp.setOrigin(octp.getGlobalBounds().width/2, octp.getGlobalBounds().height/2);
     moved = 0;
     speed = SPEED;
     //octp.rotate();
@@ -94,7 +94,7 @@ void octupus::move()
 
     float dst = sqrt((pos.x-cpos.x)*(pos.x-cpos.x) + (pos.y-cpos.y)*(pos.y-cpos.y));
     static float tdst = dst;
-    if(dst < 2)
+    if(dst < 10)
     {
         speed = SPEED;
         i = 0;
@@ -110,13 +110,14 @@ void octupus::move()
         speed = SPEED;
         i=0;
         std::cout <<tdst-dst <<std::endl;
-//        if(dst < 50)
-//            speed = SPEED/2;
-//            res = 0;
+        if(dst < 50)
+			{
+			speed = SPEED/3;
+            res = 0;
+			}
     }
    // std::cout <<pos.x <<" - " <<pos.y <<" - " <<dst <<std::endl;
 
     octp.move(pos);
 
 }
-
